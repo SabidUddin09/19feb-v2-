@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Gorgeous ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* Container */
+.container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    margin-top: 20px;
+}
+
+/* Typing text */
+#typing {
+    font-size: 1.2rem;
+    min-height: 80px;
+    margin-top: 20px;
+}
+
+/* Gallery */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.gallery img:hover {
+    transform: scale(1.07);
+}
+
+/* Popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.popup img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+/* Button */
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #ff4b6e;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Canvas for fireworks */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Floating hearts */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    font-size: 18px;
+    animation: hearts 6s linear infinite;
+}
+
+@keyframes hearts {
+    to {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* Mobile Optimization */
+@media (max-width:600px) {
+    h1 { font-size: 2rem; }
+    #typing { font-size: 1rem; }
+}
+</style>
+</head>
+
+<body onclick="launchFirework(event)">
+
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+
+<h1>Happy Birthday My Beautiful ❤️</h1>
+
+<div id="typing"></div>
+
+<button onclick="showLove()">Click for Surprise 🎁</button>
+
+<h2>Your Memories 📸</h2>
+
+<div class="gallery">
+    <img src="photo1.jpg" onclick="openPopup(this.src)">
+    <img src="photo2.jpg" onclick="openPopup(this.src)">
+    <img src="photo3.jpg" onclick="openPopup(this.src)">
+    <img src="photo4.jpg" onclick="openPopup(this.src)">
+    <img src="photo5.jpg" onclick="openPopup(this.src)">
+    <img src="photo6.jpg" onclick="openPopup(this.src)">
+    <img src="photo7.jpg" onclick="openPopup(this.src)">
+    <img src="photo8.jpg" onclick="openPopup(this.src)">
+</div>
+
+</div>
+
+<div class="popup" id="popup" onclick="closePopup()">
+    <img id="popupImg">
+</div>
+
+<script>
+
+/* Typing Animation */
+const message = "To the girl who makes "stunning" look like a breeze,
+May your day bring you laughter and moments of ease.
+Here’s to another year of you owning the room,
+And staying the brightest flower in full, gorgeous bloom. ❤️";
+
+let i = 0;
+function typeWriter() {
+    if (i < message.length) {
+        document.getElementById("typing").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 40);
+    }
+}
+typeWriter();
+
+/* Popup Gallery */
+function openPopup(src) {
+    document.getElementById("popup").style.display = "flex";
+    document.getElementById("popupImg").src = src;
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+/* Surprise Message */
+function showLove() {
+    alert("You mean more to me than words can ever explain ❤️");
+}
+
+/* Floating Hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 300);
+
+/* Fireworks */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function launchFirework(e) {
+    for (let i = 0; i < 20; i++) {
+        let x = e.clientX;
+        let y = e.clientY;
+        let dx = (Math.random() - 0.5) * 8;
+        let dy = (Math.random() - 0.5) * 8;
+
+        animateParticle(x, y, dx, dy);
+    }
+}
+
+function animateParticle(x, y, dx, dy) {
+    let life = 60;
+
+    function draw() {
+        if (life-- <= 0) return;
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        x += dx;
+        y += dy;
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+</script>
+
+</body>
+</html>
